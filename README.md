@@ -7,6 +7,8 @@ If the vpn connection is down only ping, dns and the OpenVPN Remote ports will b
 
 OpenVPN client container also has a built in ping monitor, so if the openvpn interface is up and ping is not possible it will restart the connection.
 
+HAProxy is listening on port 80 by default, haproxy configuration file can be found here: /data/openvpn-client-haproxy/haproxy/haproxy.cfg
+
 ----------
 # Environment Variables
 | Variable | Description | Example |
@@ -17,14 +19,13 @@ OpenVPN client container also has a built in ping monitor, so if the openvpn int
 | OPENVPN_FIREWALL_ALLOW_UDP | Comma separated list of UDP ports that you want to open to container, if environment variable is empty all UDP ports will be allowed from outside. If not specified, UDP traffic from outside will be blocked. | 53 |
 
 
-
 ----------
 # Start OpenVPN client container:
 ```sh
 $ docker run -dt \
     --name openvpn-client \
     --hostname openvpn-client \
-    -v /data/vpn:/vpn \
+    -v /data/openvpn-client-haproxy:/data \
     -e LOCAL_NETWORKS=192.168.0.0/24 \
     -e OPENVPN_REMOTE_PORTS=1194,1195\
     -e OPENVPN_FIREWALL_ALLOW_TCP=80,443 \

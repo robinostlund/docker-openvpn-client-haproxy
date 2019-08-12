@@ -19,10 +19,10 @@ compress lzo
 verb 3
 persist-key
 persist-tun
-auth-user-pass /vpn/credentials
+auth-user-pass /data/openvpn/credentials
 
-ca /vpn/ca file
-tls-auth /vpn/tls key 1
+ca /data/openvpn/ca file
+tls-auth /data/openvpn/tls key 1
 
 push "redirect-gateway def1"
 

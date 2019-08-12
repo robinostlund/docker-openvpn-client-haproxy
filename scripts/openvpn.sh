@@ -19,7 +19,7 @@ if [ ! -d "$OPENVPN_PID_FOLDER" ]; then
     mkdir -p $OPENVPN_PID_FOLDER
 fi
 
-if [ ! -d "/data/openvvpn/examples" ]; then
+if [ ! -d "/data/openvpn/examples" ]; then
     mkdir /data/openvpn/examples
     cp /root/files/credentials.example /data/openvpn/examples/credentials.example
     cp /root/files/openvpn.conf.example /data/openvpn/examples/openvpn.conf.example
