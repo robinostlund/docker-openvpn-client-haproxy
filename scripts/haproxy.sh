@@ -15,7 +15,7 @@ fi
 
 if [ ! -d "/data/haproxy/examples" ]; then
     mkdir /data/haproxy/examples
-    cp /root/files/haproxy.cfg.example /data/openvpn/examples/haproxy.cfg.example
+    cp /root/files/haproxy.cfg.example /data/haproxy/examples/haproxy.cfg.example
 fi
 
 
