@@ -1,17 +1,12 @@
 global
     chroot /var/lib/haproxy
-    log /dev/log local0
+    log /dev/stdout local0
     stats socket /run/haproxy/admin.sock mode 660 level admin
     stats timeout 30s
     user haproxy
     group haproxy
     maxconn 500
     nbproc 1
-
-    # load luas
-    lua-load /data/etc/haproxy/lua/acme-http01-webroot.lua
-    lua-load /data/etc/haproxy/lua/robots_disallow.lua
-    lua-load /data/etc/haproxy/lua/healthcheck.lua
 
     # Default SSL material locations
     ca-base /etc/ssl/certs
@@ -24,20 +19,20 @@ global
     ssl-default-bind-options no-sslv3
 
 defaults
-	log	global
+    log	global
     mode http
 
-	# log settings
-	option httplog
-	option dontlognull
+    # log settings
+    option httplog
+    option dontlognull
 
-	# loadbalancing settings
-	balance leastconn
+    # loadbalancing settings
+    balance leastconn
 
-	# timeout settings
-	timeout connect 5000
-	timeout client  50000
-	timeout server  50000
+    # timeout settings
+    timeout connect 5000
+    timeout client  50000
+    timeout server  50000
 
 frontend default_frontend
     bind *:80
