@@ -1,0 +1,32 @@
+client
+remote-random
+proto udp
+mute-replay-warnings
+replay-window 256
+
+# Remote settings
+remote myurl port 
+
+
+remote-cert-tls server
+cipher aes-256-cbc
+ncp-ciphers AES-256-GCM:AES-256-CBC:AES-128-GCM
+pull
+nobind
+reneg-sec 432000
+resolv-retry infinite
+compress lzo
+verb 3
+persist-key
+persist-tun
+auth-user-pass /vpn/credentials
+
+ca /vpn/ca file
+tls-auth /vpn/tls key 1
+
+push "redirect-gateway def1"
+
+# This updates the resolvconf with dns settings
+script-security 2
+up /etc/openvpn/up.sh
+down /etc/openvpn/down.sh

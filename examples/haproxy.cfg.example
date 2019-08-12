@@ -1,0 +1,58 @@
+global
+    chroot /var/lib/haproxy
+    log /dev/log local0
+    stats socket /run/haproxy/admin.sock mode 660 level admin
+    stats timeout 30s
+    user haproxy
+    group haproxy
+    maxconn 500
+    nbproc 1
+
+    # load luas
+    lua-load /data/etc/haproxy/lua/acme-http01-webroot.lua
+    lua-load /data/etc/haproxy/lua/robots_disallow.lua
+    lua-load /data/etc/haproxy/lua/healthcheck.lua
+
+    # Default SSL material locations
+    ca-base /etc/ssl/certs
+    crt-base /etc/ssl/private
+
+    # Default ciphers to use on SSL-enabled listening sockets.
+    # For more information, see ciphers(1SSL). This list is from:
+    #  https://hynek.me/articles/hardening-your-web-servers-ssl-ciphers/
+    ssl-default-bind-ciphers ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS
+    ssl-default-bind-options no-sslv3
+
+defaults
+	log	global
+    mode http
+
+	# log settings
+	option httplog
+	option dontlognull
+
+	# loadbalancing settings
+	balance leastconn
+
+	# timeout settings
+	timeout connect 5000
+	timeout client  50000
+	timeout server  50000
+
+frontend default_frontend
+    bind *:80
+
+    # test uri to see if its a haproxy_status request
+    acl status_page path_beg /haproxy_status
+    use_backend backend_haproxy_status if status_page
+
+    default_backend backend_default
+
+# haproxy stats backend
+backend backend_haproxy_status
+    stats enable
+    stats uri /
+
+# default backend
+backend backend_default
+    # Config omitted here
